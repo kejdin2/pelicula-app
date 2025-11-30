@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title th:text="${actor.id != null ? 'Editar Actor' : 'Nuevo Actor'}"></title>
+    <link rel="icon" type="image/png" href="/favicon.svg">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: auto;
+        }
+
+        .nav a {
+            margin-right: 18px;
+            text-decoration: none;
+            color: #0077cc;
+            font-weight: bold;
+        }
+
+        .nav { margin-bottom: 20px; }
+
+        form {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            max-width: 450px;
+            width: 100%;
+            margin: auto;
+        }
+
+        .field {
+            margin-bottom: 14px;
+        }
+
+        .field label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input {
+            width: 100%;
+            padding: 7px;
+            box-sizing: border-box;
+        }
+
+        .buttons {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .save-btn {
+            background: #28a745;
+            color: white;
+            padding: 10px 14px;
+            border-radius: 5px;
+            border: none;
+        }
+
+        .cancel-btn {
+            background: #999;
+            color: white;
+            padding: 10px 14px;
+            border-radius: 5px;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+<div class="container">
+
+    <div class="nav">
+        <a href="/">Home</a>
+        <a href="/peliculas">Movies</a>
+        <a href="/actores">Actors</a>
+    </div>
+
+    <h1 th:text="${actor.id != null ? 'Editar Actor' : 'Nuevo Actor'}"></h1>
+
+    <form th:action="@{/actores/guardar}" th:object="${actor}" method="post">
+        <input type="hidden" th:field="*{id}" />
+
+        <div class="field">
+            <label>Name:</label>
+            <input type="text" th:field="*{nombre}" required />
+        </div>
+
+        <div class="field">
+            <label>Date of birth:</label>
+            <input type="date" th:field="*{fechaNacimiento}" />
+        </div>
+
+        <div class="field">
+            <label>Birth Country:</label>
+            <input type="text" th:field="*{paisNacimiento}" />
+        </div>
+
+        <div class="buttons">
+            <button class="save-btn" type="submit">Save</button>
+            <a th:href="@{/actores}" class="cancel-btn">Cancel</a>
+        </div>
+
+    </form>
+
+</div>
+</body>
+</html>

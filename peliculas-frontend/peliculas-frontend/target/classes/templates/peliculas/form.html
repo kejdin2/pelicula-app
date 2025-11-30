@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title th:text="${pelicula.id != null ? 'Editar Película' : 'Nueva Película'}"></title>
+    <link rel="icon" type="image/png" href="/favicon.svg">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: auto;
+        }
+
+        h1 { color: #333; }
+
+        .nav a {
+            margin-right: 18px;
+            text-decoration: none;
+            color: #0077cc;
+            font-weight: bold;
+        }
+
+        .nav { margin-bottom: 20px; }
+
+        form {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 600px;
+            margin: auto;
+        }
+
+        .field {
+            margin-bottom: 14px;
+        }
+
+        .field label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 7px;
+            box-sizing: border-box;
+        }
+
+        img.preview {
+            max-width: 100%;
+            margin-top: 8px;
+            border-radius: 8px;
+        }
+
+        .buttons {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .save-btn {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 14px;
+            border-radius: 5px;
+        }
+
+        .cancel-btn {
+            background: #999;
+            color: white;
+            padding: 10px 14px;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+
+<body>
+<div class="container">
+
+    <div class="nav">
+        <a href="/">Home</a>
+        <a href="/peliculas">Movies</a>
+        <a href="/actores">Actors</a>
+    </div>
+
+    <h1 th:text="${pelicula.id != null ? 'Editar Película' : 'Nueva Película'}"></h1>
+
+    <form th:action="@{/peliculas/guardar}" th:object="${pelicula}" method="post">
+
+        <input type="hidden" th:field="*{id}"/>
+
+        <div class="field">
+            <label>Title:</label>
+            <input type="text" th:field="*{titulo}" required />
+        </div>
+
+        <div class="field">
+            <label>Year:</label>
+            <input type="number" th:field="*{year}" min="1900" max="2100"/>
+        </div>
+
+        <div class="field">
+            <label>Duration (min):</label>
+            <input type="number" th:field="*{duracion}"/>
+        </div>
+
+        <div class="field">
+            <label>Country:</label>
+            <input type="text" th:field="*{pais}"/>
+        </div>
+
+        <div class="field">
+            <label>Direction:</label>
+            <input type="text" th:field="*{direccion}"/>
+        </div>
+
+        <div class="field">
+            <label>Genre:</label>
+            <input type="text" th:field="*{genero}"/>
+        </div>
+
+        <div class="field">
+            <label>Sinopsis:</label>
+            <textarea th:field="*{sinopsis}" rows="5"></textarea>
+        </div>
+
+        <div class="field">
+            <label>Poster (URL):</label>
+            <input type="text" th:field="*{portada}" placeholder="https://..."/>
+            <img th:if="*{portada}" th:src="*{portada}" class="preview"/>
+        </div>
+
+        <div class="field">
+            <label>Actors:</label>
+            <select th:field="*{actores}" multiple size="6">
+                <option th:each="a : ${actores}" th:value="${a.id}" th:text="${a.nombre}"></option>
+            </select>
+        </div>
+
+        <div class="buttons">
+            <button type="submit" class="save-btn">Save</button>
+            <a th:href="@{/peliculas}" class="cancel-btn">Cancel</a>
+        </div>
+
+    </form>
+</div>
+</body>
+</html>

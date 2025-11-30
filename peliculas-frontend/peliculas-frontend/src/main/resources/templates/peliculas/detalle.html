@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title th:text="${pelicula.titulo}">Detalle Película</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #111; /* darker background for more cinematic look */
+            color: #eee;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: auto;
+            background: #1c1c1c;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.35);
+        }
+
+        .top-bar {
+            margin-bottom: 20px;
+        }
+
+        .back-btn {
+            color: white;
+            background: #007bff;
+            padding: 10px 15px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .movie-header {
+            display: flex;
+            gap: 25px;
+            flex-wrap: wrap;
+        }
+
+        .poster {
+            width: 280px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.4);
+        }
+
+        .info {
+            flex: 1;
+            min-width: 250px;
+        }
+
+        h1 {
+            margin-top: 0;
+            font-size: 32px;
+        }
+
+        .label {
+            font-weight: bold;
+            color: #ccc;
+        }
+
+        .section-title {
+            margin-top: 30px;
+            font-size: 24px;
+            color: #ffdd57;
+            border-bottom: 2px solid #333;
+            padding-bottom: 6px;
+        }
+
+        ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .actor-item {
+            margin-bottom: 6px;
+            color: #ddd;
+        }
+
+        .actor-item span {
+            color: #aaa;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="top-bar">
+        <a th:href="@{/peliculas}" class="back-btn">← Back to movies</a>
+    </div>
+
+    <div class="movie-header">
+
+        <img th:src="${pelicula.portada != null ? pelicula.portada : '/img/no-image.jpg'}"
+             alt="Poster"
+             class="poster"/>
+
+        <div class="info">
+            <h1 th:text="${pelicula.titulo}"></h1>
+
+            <p><span class="label">Year:</span> <span th:text="${pelicula.year}"></span></p>
+            <p><span class="label">Duration:</span> <span th:text="${pelicula.duracion}"></span> min</p>
+            <p><span class="label">Country:</span> <span th:text="${pelicula.pais}"></span></p>
+            <p><span class="label">Director:</span> <span th:text="${pelicula.direccion}"></span></p>
+            <p><span class="label">Genre:</span> <span th:text="${pelicula.genero}"></span></p>
+        </div>
+    </div>
+
+    <h2 class="section-title">Synopsis</h2>
+    <p th:text="${pelicula.sinopsis != null ? pelicula.sinopsis : 'No synopsis available.'}"></p>
+
+    <h2 class="section-title">Cast</h2>
+    <ul>
+        <li th:each="a : ${pelicula.actores}" class="actor-item">
+            <span th:text="${a.nombre}"></span>
+            <span th:if="${a.paisNacimiento}"> - <span th:text="${a.paisNacimiento}"></span></span>
+            <span th:if="${a.fechaNacimiento}"> (<span th:text="${a.fechaNacimiento}"></span>)</span>
+        </li>
+        <li th:if="${pelicula.actores == null || #lists.isEmpty(pelicula.actores)}" class="actor-item">
+            No cast information available.
+        </li>
+    </ul>
+
+</div>
+
+</body>
+</html>

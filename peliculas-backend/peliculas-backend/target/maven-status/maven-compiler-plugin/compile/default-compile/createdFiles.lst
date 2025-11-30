@@ -1,0 +1,9 @@
+com\uah\peliculas_backend\repository\ActorRepository.class
+com\uah\peliculas_backend\repository\PeliculaRepository.class
+com\uah\peliculas_backend\controller\PeliculaController.class
+com\uah\peliculas_backend\model\Actor.class
+com\uah\peliculas_backend\model\Pelicula.class
+com\uah\peliculas_backend\controller\ActorController.class
+com\uah\peliculas_backend\service\PeliculaService.class
+com\uah\peliculas_backend\PeliculasBackendApplication.class
+com\uah\peliculas_backend\service\ActorService.class

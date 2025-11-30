@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Películas</title>
+    <link rel="icon" type="image/png" href="/favicon.svg">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1100px;
+            margin: auto;
+        }
+        h1 { color: #333; }
+
+        .nav a { margin-right: 18px; text-decoration: none; color: #0077cc; font-weight: bold; }
+        .nav { margin-bottom: 20px; }
+        .add-btn { background: #28a745; color: white; padding: 10px 14px; border-radius: 5px; text-decoration: none; display: inline-block; margin-bottom: 15px; }
+
+        .search-row {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            margin-bottom: 14px;
+        }
+        .search-row input[type="text"]{
+            flex: 1;
+            max-width: 420px;
+            padding: 10px 12px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 15px;
+        }
+        .search-row button {
+            padding: 10px 14px;
+            border-radius: 6px;
+            background: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .table-wrapper { overflow-x: auto; background: white; border-radius: 8px; padding: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 700px;
+            table-layout: auto; /* allow columns to size naturally */
+        }
+
+        thead th {
+            background: #fafafa;
+            font-weight: bold;
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+            text-align: left;
+        }
+
+        tbody td {
+            padding: 12px;
+            border-bottom: 1px solid #eee;
+            vertical-align: middle;
+        }
+
+        tr:hover { background: #eef5ff; }
+
+        th.poster-col, td.poster-col {
+            width: 80px;
+            text-align: center;
+        }
+
+        th.actions-col, td.actions {
+            width: 170px;
+            text-align: center;
+        }
+
+        th.year-col, td.year-col,
+        th.duration-col, td.duration-col {
+            width: 90px;
+        }
+
+        th.genre-col, td.genre-col {
+            width: 140px;
+        }
+
+        .poster {
+            height: 90px;
+            width: 60px;
+            object-fit: cover;
+            border-radius: 5px;
+            display: inline-block;
+        }
+
+        td.title-col {
+            white-space: normal;
+            word-break: keep-all;
+            overflow-wrap: normal;
+            max-width: 420px;
+        }
+
+        .movie-link {
+            color: #004a99;
+            font-weight: bold;
+            text-decoration: none;
+        }
+        .movie-link:hover { text-decoration: underline; }
+
+        .btn {
+            padding: 10px 10px;
+            border-radius: 5px;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 14px;
+            cursor: pointer;
+            margin: 20px;
+        }
+        .edit-btn { background: #ffc107; color: black; }
+        .delete-btn { background: #dc3545; color: white; }
+
+        /* vertical stack of action buttons */
+        .actions {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            justify-content: center;
+            align-items: center;
+        }
+    </style>
+</head>
+
+<body>
+<div class="container">
+
+    <div class="nav">
+        <a href="/">Home</a>
+        <a href="/peliculas">Movies</a>
+        <a href="/actores">Actors</a>
+    </div>
+
+    <h1>Movies</h1>
+
+    <a class="add-btn" th:href="@{/peliculas/nueva}">+ Create new movie</a>
+
+    <form class="search-row" th:action="@{/peliculas}" method="get" role="search">
+        <input type="text" name="q" placeholder="Search by title, genre or actor..."
+               th:value="${q}" />
+        <button type="submit">Search</button>
+        <a th:href="@{/peliculas}" style="margin-left:8px; color:#666; text-decoration:none;">Reset</a>
+    </form>
+
+    <div class="table-wrapper">
+        <table>
+            <thead>
+            <tr>
+                <th class="poster-col">Poster</th>
+                <th>Title</th>
+                <th class="year-col">Year</th>
+                <th class="genre-col">Genre</th>
+                <th class="duration-col">Duration</th>
+                <th class="actions-col">Actions</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr th:each="p : ${peliculas}">
+                <td class="poster-col">
+                    <a th:href="@{'/peliculas/' + ${p.id}}">
+                        <img th:if="${p.portada}" th:src="${p.portada}" class="poster"/>
+                        <span th:if="${p.portada == null}">No image</span>
+                    </a>
+                </td>
+
+                <td class="title-col">
+                    <a class="movie-link" th:href="@{'/peliculas/' + ${p.id}}" th:text="${p.titulo}"></a>
+                </td>
+
+                <td class="year-col" th:text="${p.year}"></td>
+                <td class="genre-col" th:text="${p.genero}"></td>
+                <td class="duration-col" th:text="${p.duracion}"></td>
+
+                <td class="actions">
+                    <a th:href="@{'/peliculas/editar/' + ${p.id}}" class="btn edit-btn">Edit</a>
+                    <a th:href="@{'/peliculas/eliminar/' + ${p.id}}"
+                       onclick="return confirm('¿Eliminar esta película?');"
+                       class="btn delete-btn">Delete</a>
+                </td>
+
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+</body>
+</html>

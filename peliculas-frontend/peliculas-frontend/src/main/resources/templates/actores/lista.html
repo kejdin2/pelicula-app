@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Actors</title>
+    <link rel="icon" type="image/png" href="/favicon.svg">
+
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #f4f4f4;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: auto;
+        }
+
+        h1 { color: #333; }
+
+        .nav a {
+            margin-right: 18px;
+            text-decoration: none;
+            color: #0077cc;
+            font-weight: bold;
+        }
+
+        .nav { margin-bottom: 20px; }
+
+        .add-btn {
+            background: #28a745;
+            color: white;
+            padding: 10px 14px;
+            border-radius: 5px;
+            text-decoration: none;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+            background: white;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 650px;
+        }
+
+        th, td {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background: #fafafa;
+        }
+
+        tr:hover {
+            background: #eef5ff;
+        }
+
+        .actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 6px 10px;
+            border-radius: 5px;
+            text-decoration: none;
+        }
+
+        .edit-btn { background: #ffc107; color: black; }
+        .delete-btn { background: #dc3545; color: white; }
+    </style>
+</head>
+
+<body>
+<div class="container">
+
+    <div class="nav">
+        <a href="/">Home</a>
+        <a href="/peliculas">Movies</a>
+        <a href="/actores">Actors</a>
+    </div>
+
+    <h1>Actors</h1>
+
+    <a class="add-btn" th:href="@{/actores/nuevo}">+ Create new actor</a>
+
+    <div class="table-wrapper">
+        <table>
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Date of birth</th>
+                <th>Country</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr th:each="a : ${actores}">
+                <td th:text="${a.nombre}"></td>
+                <td th:text="${a.fechaNacimiento}"></td>
+                <td th:text="${a.paisNacimiento}"></td>
+
+                <td class="actions">
+                    <a th:href="@{'/actores/editar/' + ${a.id}}" class="btn edit-btn">Edit</a>
+                    <a th:href="@{'/actores/eliminar/' + ${a.id}}"
+                       onclick="return confirm('¿Eliminar este actor?');"
+                       class="btn delete-btn">Delete</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+</body>
+</html>
